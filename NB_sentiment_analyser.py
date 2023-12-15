@@ -11,6 +11,7 @@ import pandas as pd
 from classifier import BayesClassifier
 from evaluator import Evaluator
 from preprosessor import Preprosessor
+from feature_selector import Feture_selector
 
 
 
@@ -26,7 +27,7 @@ def parse_args():
     parser.add_argument("test")
     parser.add_argument("-classes", type=int)
     parser.add_argument('-features', type=str, default="all_words", choices=["all_words", "features"])
-    parser.add_argument('-selection', type=str, default="count_difference", choices=["most_common", "count_difference", "chi_square"])
+    parser.add_argument('-selection', type=str, default="chi_square", choices=["most_common", "chi_square"])
     parser.add_argument('-nfeatures', type=int, default="1500")
     parser.add_argument('-output_files', action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument('-confusion_matrix', action=argparse.BooleanOptionalAction, default=False)
@@ -48,7 +49,7 @@ def main():
     #accepted values "features" to use your features or "all_words" to use all words (default = all_words)
     features = inputs.features
     
-    # feature selection method (default = count_difference)
+    # feature selection method (default = chi_square)
     feature_selection = inputs.selection
 
     # number of features to be selected (default = 1500)
@@ -66,7 +67,7 @@ def main():
     test_data = pd.read_csv(test, index_col=0, delimiter='\t') 
 
     # Preprosessing phrases
-    preprosessor = Preprosessor(number_classes, features, feature_selection)
+    preprosessor = Preprosessor(number_classes, features)
 
     if number_classes == 3:
         # Changing scores from 0-4 to 0-2
@@ -79,14 +80,15 @@ def main():
     test_data['Phrase'] = test_data['Phrase'].apply(preprosessor.preprocess_text)
 
     if features == "features":
+        f_selector = Feture_selector(feature_selection, number_classes)
         # Combine dev and train data to find the most common features
         combined_data = pd.concat([train_data, dev_data])
 
         # Identify the most crucial features
-        preprosessor.feature_selection(combined_data, nfeatures)
-        train_data['Phrase'] = train_data['Phrase'].apply(preprosessor.filter_features)
-        dev_data['Phrase'] = dev_data['Phrase'].apply(preprosessor.filter_features)
-        test_data['Phrase'] = test_data['Phrase'].apply(preprosessor.filter_features)
+        f_selector.feature_selection(combined_data, nfeatures)
+        train_data['Phrase'] = train_data['Phrase'].apply(f_selector.filter_features)
+        dev_data['Phrase'] = dev_data['Phrase'].apply(f_selector.filter_features)
+        test_data['Phrase'] = test_data['Phrase'].apply(f_selector.filter_features)
 
     # Train the classifier
     classifier = BayesClassifier(train_data, number_classes)

@@ -2,7 +2,6 @@ import pandas as pd
 
 class BayesClassifier:
 
-     # Creates new Classify object storing the number of classes
     def __init__(self, train_data: pd.DataFrame, number_classes):
         """
         Constructor for the BayesClassifier class.
@@ -25,8 +24,8 @@ class BayesClassifier:
         
         # Add words to each class dictionary
         for phrase in self.train_data.itertuples():
-            class_dicts[phrase.Sentiment]["total"] += 1
             for word in phrase.Phrase.split():
+                class_dicts[phrase.Sentiment]["total"] += 1
                 if word in class_dicts[phrase.Sentiment]:
                     class_dicts[phrase.Sentiment][word] += 1
                 else:
@@ -44,6 +43,7 @@ class BayesClassifier:
             combined_dict.update(class_dict)
         # Calculate number of unique words
         V = len(combined_dict) - self.number_classes
+        self.V = V
 
         # Calculate prior for each class
         self.priors = []
@@ -58,8 +58,6 @@ class BayesClassifier:
                 likelihood[word] = self.calcuate_likelihood(class_dict, word, V)
             self.likelihoods.append(likelihood)
     
-
-    # Function to calculate the likelihood of a word given a class
     def calcuate_likelihood(self, class_dict, word , V):
         """
         Calculates the likelihood of a word given a class.
@@ -75,7 +73,7 @@ class BayesClassifier:
         if word in class_dict:
             return (class_dict[word] + 1)/(class_dict["total"] + V)
         else:
-            return 1/(self.class_dicts["total"] + V)
+            return 1/(class_dict["total"] + V)
 
     def get_likelihood(self, word, sentiment_class):
         """
@@ -91,7 +89,7 @@ class BayesClassifier:
         if word in self.likelihoods[sentiment_class]:
             return self.likelihoods[sentiment_class][word]
         else:
-            return 1/(len(self.likelihoods[sentiment_class]) + 1)
+            return 1/(self.class_dicts[sentiment_class]["total"] + self.V)
         
     def calculate_prior(self, class_dict, total):
         """
@@ -125,6 +123,10 @@ class BayesClassifier:
             if prob > max_prob:
                 max_prob = prob
                 predicted = sentiment_class
+        # If no class is predicted, return the class with the highest prior
+        if predicted == None:
+            predicted = self.priors.index(max(self.priors))
+            
         return predicted
     
     def output(self, outfile, predicted_classes):

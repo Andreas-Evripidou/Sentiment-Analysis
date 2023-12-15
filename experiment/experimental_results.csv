@@ -1,0 +1,39 @@
+classes,features,selection,nfeatures,macrof1
+   3    ,all_words ,  most_common   ,     0     ,0.505625
+   5    ,all_words ,  most_common   ,     0     ,0.325937
+   3    , features ,  most_common   ,    100    ,0.358406
+   3    , features ,   chi_square   ,    100    ,0.363329
+   5    , features ,  most_common   ,    100    ,0.224408
+   5    , features ,   chi_square   ,    100    ,0.253132
+   3    , features ,  most_common   ,    300    ,0.411119
+   3    , features ,   chi_square   ,    300    ,0.418834
+   5    , features ,  most_common   ,    300    ,0.281144
+   5    , features ,   chi_square   ,    300    ,0.309800
+   3    , features ,  most_common   ,    500    ,0.444404
+   3    , features ,   chi_square   ,    500    ,0.450270
+   5    , features ,  most_common   ,    500    ,0.295530
+   5    , features ,   chi_square   ,    500    ,0.319745
+   3    , features ,  most_common   ,    750    ,0.476434
+   3    , features ,   chi_square   ,    750    ,0.485606
+   5    , features ,  most_common   ,    750    ,0.304003
+   5    , features ,   chi_square   ,    750    ,0.349409
+   3    , features ,  most_common   ,   1000    ,0.483031
+   3    , features ,   chi_square   ,   1000    ,0.497158
+   5    , features ,  most_common   ,   1000    ,0.323556
+   5    , features ,   chi_square   ,   1000    ,0.361067
+   3    , features ,  most_common   ,   1250    ,0.495354
+   3    , features ,   chi_square   ,   1250    ,0.523805
+   5    , features ,  most_common   ,   1250    ,0.332846
+   5    , features ,   chi_square   ,   1250    ,0.380385
+   3    , features ,  most_common   ,   1500    ,0.510759
+   3    , features ,   chi_square   ,   1500    ,0.536531
+   5    , features ,  most_common   ,   1500    ,0.347920
+   5    , features ,   chi_square   ,   1500    ,0.388635
+   3    , features ,  most_common   ,   2000    ,0.497112
+   3    , features ,   chi_square   ,   2000    ,0.529394
+   5    , features ,  most_common   ,   2000    ,0.335978
+   5    , features ,   chi_square   ,   2000    ,0.399629
+   3    , features ,  most_common   ,   2500    ,0.503859
+   3    , features ,   chi_square   ,   2500    ,0.535530
+   5    , features ,  most_common   ,   2500    ,0.340371
+   5    , features ,   chi_square   ,   2500    ,0.415240
